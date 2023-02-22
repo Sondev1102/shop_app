@@ -72,6 +72,13 @@ class CartScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.red,
                     ),
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 40,
+                    ),
                   ),
                   child: Card(
                     elevation: 4,
