@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/product.dart';
 
 class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<Cart>(context, listen: false);
     final productItem = Provider.of<Product>(context, listen: false);
     return Card(
       elevation: 5,
@@ -44,9 +46,14 @@ class ProductItem extends StatelessWidget {
                   ),
                   Text('\$${productItem.price}'),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
-                  Text(productItem.description),
+                  Text(
+                    productItem.description,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    maxLines: 3,
+                  ),
                 ],
               ),
             ),
@@ -64,7 +71,8 @@ class ProductItem extends StatelessWidget {
               ],
             ),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () => cart.addToCart(
+                  productItem.id, productItem.price, productItem.title),
               icon: const Icon(Icons.shopping_cart),
             ),
           ),
