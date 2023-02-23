@@ -64,6 +64,33 @@ class CartScreen extends StatelessWidget {
                   onDismissed: (direction) {
                     cart.removeCartItem(cart.cart.keys.toList()[index]);
                   },
+                  confirmDismiss: (direction) {
+                    return showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: Text(
+                          'Do you want to remote this item from the cart?',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: Text(
+                              'No',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: Text(
+                              'Yes',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   key: ValueKey(cartItem.id),
                   direction: DismissDirection.endToStart,
                   background: Container(
