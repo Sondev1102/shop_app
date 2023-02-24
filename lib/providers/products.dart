@@ -6,7 +6,8 @@ import 'package:shop_app/server/server.dart';
 
 class Products with ChangeNotifier {
   static final Server _server = Server();
-  static const String _prefix = 'products.json';
+  static const String _prefix = 'products';
+  static const String _end = '.json';
   List<Product> _products = [];
   //   Product(
   //     id: 'p1',
@@ -47,16 +48,17 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    final response = await _server.baseGet(_prefix) as Map<String, dynamic>;
+    final Map<String, dynamic> response =
+        await _server.baseGet(_prefix + _end) ?? {};
     final List<Product> _loadedProducts = [];
     response.forEach((prodId, prod) {
       _loadedProducts.add(
         Product(
           id: prodId,
-          title: prod['title'] as String,
-          description: prod['description'] as String,
-          imageUrl: prod['imageUrl'] as String,
-          price: prod['price'] as double,
+          title: prod['title'],
+          description: prod['description'],
+          imageUrl: prod['imageUrl'],
+          price: prod['price'],
         ),
       );
     });
@@ -71,14 +73,15 @@ class Products with ChangeNotifier {
       'price': product.price,
       'isFavorite': product.isFavorite,
       'imageUrl': product.imageUrl,
-    }, _prefix);
+    }, _prefix + _end);
     await this.fetchAndSetProducts();
     notifyListeners();
   }
 
   Future<void> deleteProduct(String productId, BuildContext context) async {
-    await _server.baseDelete(productId, _prefix, context);
-    await this.fetchAndSetProducts;
+    await _server.baseDelete(
+        productId, _prefix + '/' + productId + _end, context);
+    await this.fetchAndSetProducts();
     notifyListeners();
   }
 }
